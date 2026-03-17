@@ -77,7 +77,7 @@
     const overlay = document.getElementById('music-overlay');
     
     function playMusic() {
-      bgMusic.volume = 0.8;
+      bgMusic.volume = 
       bgMusic.play().then(() => {
         overlay.style.display = 'none'; // Hide overlay after play success
       }).catch(e => console.log('Play failed:', e));
