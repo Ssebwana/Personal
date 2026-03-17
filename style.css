@@ -246,9 +246,17 @@ main {
   animation: reveal-out 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
+
 .card img.reveal-in {
-  animation: reveal-in 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: reveal-in 1s cubic-bezier(0.34, 0.16, 0.25, 1.3) forwards;
 }
+
+@keyframes bounceReveal {
+  0% { transform: scale(0.9); opacity: 0; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 
 @keyframes swap {
   0% {
@@ -394,15 +402,27 @@ main {
   background: linear-gradient(-180deg, #ffc16f, #f76591);
   border: none;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 20px;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
   color: white;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(247, 101, 145, 0.4);
   z-index: 1000;
   transition: all 0.3s ease;
   pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#music-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(247, 101, 145, 0.6);
+}
+
+#music-toggle.playing {
+  background: linear-gradient(-180deg, #00c8ff, #8a2be2);
 }
 
 #music-toggle:hover {

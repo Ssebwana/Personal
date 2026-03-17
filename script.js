@@ -20,10 +20,14 @@ function moveCard() {
       const newTopCard = stack.firstElementChild;
       const newTopImg = newTopCard.querySelector('img');
       if (newTopImg) {
+        newTopImg.style.transform = 'scale(1.05)';
         newTopImg.classList.add('reveal-in');
-        setTimeout(() => newTopImg.classList.remove('reveal-in'), 700);
+        setTimeout(() => {
+          newTopImg.classList.remove('reveal-in');
+          newTopImg.style.transform = '';
+        }, 1200);
       }
-    }, 1300);
+    }, 2200);
   }
 }
 
@@ -40,27 +44,32 @@ stack.addEventListener("click", function (e) {
       card.classList.remove("swap");
       stack.insertBefore(card, stack.firstElementChild);
       resetAutoplay();
+      initMusic(); // Trigger music on card flip if not playing
       
       const newTopCard = stack.firstElementChild;
       const newTopImg = newTopCard.querySelector('img');
       if (newTopImg) {
+        newTopImg.style.transform = 'scale(1.05)';
         newTopImg.classList.add('reveal-in');
-        setTimeout(() => newTopImg.classList.remove('reveal-in'), 700);
+        setTimeout(() => {
+          newTopImg.classList.remove('reveal-in');
+          newTopImg.style.transform = '';
+        }, 1200);
       }
-    }, 1300);
+    }, 2200);
   }
 });
 
-let autoplayInterval = setInterval(moveCard, 3500);
+let autoplayInterval = setInterval(moveCard, 5000);
 
 function resetAutoplay() {
   clearInterval(autoplayInterval);
-  autoplayInterval = setInterval(moveCard, 3000);
+  autoplayInterval = setInterval(moveCard, 4500);
 }
 
 function createConfetti() {
   const confettiContainer = document.getElementById("confetti-container");
-  const confettiCount = 150; // Adjust the number of confetti pieces
+  const confettiCount = 150;
   const colors = ["#ff3e43", "#ffd700", "#00c8ff", "#8a2be2", "#ff69b4"];
 
   for (let i = 0; i < confettiCount; i++) {
@@ -68,37 +77,53 @@ function createConfetti() {
     confetti.classList.add("confetti");
     confetti.style.setProperty('--hue', Math.random() * 360);
     confetti.style.left = Math.random() * 100 + "vw";
-    confetti.style.animationDuration = Math.random() * 3 + 2 + "s"; // Randomize duration
+    confetti.style.animationDuration = Math.random() * 3 + 2 + "s";
     confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
     confetti.style.width = Math.random() * 10 + 5 + "px";
-    confetti.style.height = confetti.style.width; // Make confetti squares
+    confetti.style.height = confetti.style.width;
 
     confettiContainer.appendChild(confetti);
   }
 }
 
-// Aggressive autoplay music - play unmuted automatically
-const bgMusic = document.getElementById('bg-music');
+// Music toggle function
+window.toggleMusic = function() {
+  const music = document.getElementById('bg-music');
+  const btn = document.getElementById('music-toggle');
+  if (music.paused) {
+    music.play().then(() => {
+      btn.textContent = '⏸️';
+      btn.classList.add('playing');
+    }).catch(e => console.log('Play failed:', e));
+  } else {
+    music.pause();
+    btn.textContent = '🎵';
+    btn.classList.remove('playing');
+  }
+};
 
+// Consolidated music init - use toggle
 function initMusic() {
-  bgMusic.volume = 0.7;
-  bgMusic.play().catch(console.log);
+  const music = document.getElementById('bg-music');
+  if (music.paused) {
+    window.toggleMusic();
+  }
 }
 
-// Multiple triggers for autoplay success
-document.addEventListener('click', initMusic, {once: true});
-document.addEventListener('keydown', initMusic, {once: true});
-document.addEventListener('touchstart', initMusic, {once: true});
-window.addEventListener('load', initMusic);
+// Multiple triggers
+['click', 'keydown', 'touchstart'].forEach(evt => {
+  document.addEventListener(evt, initMusic, {once: true});
+});
 
-// Call the function when the page loads
+// Load event
 window.addEventListener('load', () => {
   createConfetti();
   startTyping();
   typeContentParagraphs();
+  initMusic();
 });
 
-// Typing animation: types provided lines one-by-one into #typed-lines
+// Typing animation for typed-lines
 function typeLine(line, container, charDelay = 40) {
   return new Promise((resolve) => {
     const p = document.createElement('p');
@@ -110,7 +135,6 @@ function typeLine(line, container, charDelay = 40) {
     let i = 0;
     function step() {
       if (i <= line.length) {
-        // remove existing text nodes (preserve cursor)
         Array.from(p.childNodes).forEach(node => { if (node !== cursor) node.remove(); });
         const textNode = document.createTextNode(line.slice(0, i));
         p.insertBefore(textNode, cursor);
@@ -122,7 +146,6 @@ function typeLine(line, container, charDelay = 40) {
         resolve();
       }
     }
-
     step();
   });
 }
@@ -131,21 +154,17 @@ async function startTyping() {
   const container = document.getElementById('typed-lines');
   if (!container) return;
 
-  const lines = [
-    
-  ];
+  const lines = [];
 
-  // Clear any previous content
   container.innerHTML = '';
 
   for (let i = 0; i < lines.length; i++) {
-    await typeLine(lines[i], container, 28);
-    // short pause between lines
-    await new Promise(r => setTimeout(r, 420));
+    await typeLine(lines[i], container, 50);
+    await new Promise(r => setTimeout(r, 800));
   }
 }
 
-// Type all paragraphs inside .content one after another with punctuation-aware pauses
+// Type content paragraphs
 async function typeContentParagraphs() {
   const paras = Array.from(document.querySelectorAll('.content p'));
   if (!paras.length) return;
@@ -156,8 +175,7 @@ async function typeContentParagraphs() {
     p.classList.remove('visible');
     await typeTextIntoElement(p, fullText);
     p.classList.add('visible');
-    // pause a bit between paragraphs
-    await new Promise(r => setTimeout(r, 600));
+    await new Promise(r => setTimeout(r, 1200));
   }
 }
 
@@ -165,7 +183,7 @@ function isPunctuation(ch) {
   return ['.', '!', '?', ','].includes(ch);
 }
 
-async function typeTextIntoElement(el, text, baseDelay = 28) {
+async function typeTextIntoElement(el, text, baseDelay = 45) {
   return new Promise((resolve) => {
     let i = 0;
     function step() {
@@ -174,8 +192,8 @@ async function typeTextIntoElement(el, text, baseDelay = 28) {
         i++;
         let delay = baseDelay + Math.random() * 20;
         const prevChar = text[i - 2] || '';
-        if (prevChar === ',') delay += 140;
-        if (prevChar === '.' || prevChar === '!' || prevChar === '?') delay += 320;
+        if (prevChar === ',') delay += 250;
+        if (prevChar === '.' || prevChar === '!' || prevChar === '?') delay += 600;
         setTimeout(step, delay);
       } else {
         resolve();
@@ -184,3 +202,4 @@ async function typeTextIntoElement(el, text, baseDelay = 28) {
     step();
   });
 }
+

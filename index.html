@@ -15,7 +15,7 @@
 
   <!-- Background music -->
   <audio id="bg-music" loop preload="auto" volume="0.8">
-    <source src="../Perosnal/birthday.ogg" type="audio/ogg">
+    <source src="../Personal/birthday.ogg" type="audio/ogg">
   </audio>
 
   <main>
@@ -68,6 +68,10 @@
     </div>
   </main>
 
+  <!-- Music toggle button -->
+  <button id="music-toggle" aria-label="Toggle background music">🎵</button>
+
+
   <div id="confetti-container"></div>
 
   <script src="./script.js"></script>
@@ -77,9 +81,11 @@
     const overlay = document.getElementById('music-overlay');
     
     function playMusic() {
-      bgMusic.volume = 
+      bgMusic.volume = 0.8;
       bgMusic.play().then(() => {
-        overlay.style.display = 'none'; // Hide overlay after play success
+        overlay.style.display = 'none';
+        document.getElementById('music-toggle').textContent = '⏸️';
+        document.getElementById('music-toggle').classList.add('playing');
       }).catch(e => console.log('Play failed:', e));
     }
     
@@ -90,5 +96,6 @@
       overlay.addEventListener(evt, playMusic, {once: true});
     });
   </script>
+
 </body>
 </html>
