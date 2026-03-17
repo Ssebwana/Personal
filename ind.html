@@ -2,54 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Love Tonny</title>
-  <!-- Favicon with cake emoji -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2212%22 font-size=%2212%22>🎂</text></svg>">
+  <title>GRAND'S 70TH BD</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 16 16\"><text y=\"12\" font-size=\"12\">🎂</text></svg>">
   <link rel="stylesheet" href="./style.css">
+  <style>
+    #music-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999; background: transparent; cursor: pointer; }
+  </style>
 </head>
 <body>
-  <!-- Background audio -->
-  <audio autoplay loop hidden>
-    <source src="birthday.mp3" type="audio/mp3">
-    Your browser does not support the audio element.
+  <!-- Invisible overlay for instant gesture trigger -->
+  <div id="music-overlay"></div>
+
+  <!-- Background music -->
+  <audio id="bg-music" loop preload="auto" volume="0.8">
+    <source src="../birthday.ogg" type="audio/ogg">
   </audio>
 
   <main>
     <div class="stack">
       <div class="card">
-        <img src="LOVE1.jpg" alt="" />
+        <img src="../BD.jpeg" alt="Birthday photo" />
       </div>
       <div class="card">
-        <img src="LOVE4.jpg" alt="" />
+        <img src="../BD1.jpeg" alt="Birthday photo" />
       </div>
       <div class="card">
-        <img src="M2.jpg" alt="" />
+        <img src="../BD2.jpeg" alt="Birthday photo" />
       </div>
       <div class="card">
-        <img src="LOVE5.jpg" alt="" />
+        <img src="../BD3.jpeg" alt="Birthday photo" />
       </div>
       <div class="card">
-        <img src="LOVE3.jpg" alt="" />
+        <img src="../BD4.jpeg" alt="Birthday photo" />
       </div>
       <div class="card">
-        <img src="M1.jpg" alt="" />
+        <img src="../BD5.jpeg" alt="Birthday photo" />
       </div>
       <div class="card">
-        <img src="M4.jpg" alt="" />
+        <img src="../BD6.jpeg" alt="Birthday photo" />
       </div>
       <div class="card">
-        <img src="LOVE2.jpg" alt="" />
+        <img src="../BD7.jpeg" alt="Birthday photo" />
+      </div>
+      <div class="card">
+        <img src="../BD8.jpeg" alt="Birthday photo" />
+      </div>
+      <div class="card">
+        <img src="../BD9.jpeg" alt="Birthday photo" />
+      </div>
+      <div class="card">
+        <img src="../BD10.jpeg" alt="Birthday photo" />
       </div>
     </div>
 
     <div class="content">
       <h1>GRAND MWAMI</h1>
       <p>
-        Today we celebrate not only your birthday, but the incredible life you have lived and the deep impact you have had on all of us. You have been a strong pillar for our entire family, a source of strength, wisdom, and unwavering support through both the joyful and challenging seasons of our lives.
-        Your sacrifices have never gone unnoticed. Time and again, you have placed the happiness and well-being of the family before your own, showing us what true love, responsibility, and selflessness look like. Through your humility, gentleness, and kindness, you have taught us lessons that no classroom could ever teach.
+        Today we celebrate not only your birthday, but the incredible life you have lived and the deep impact you have had on all of us. You have been a strong pillar for our entire family, a source of strength, wisdom and unwavering support through both the joyful and challenging seasons of our lives.
+        Your sacrifices have never gone unnoticed. Time and again, you have placed the happiness and well-being of the family before your own showing us what true love, responsibility and selflessness look like. Through your humility, gentleness and kindness, you have taught us lessons that no classroom could ever teach.
       </p>
-      
-
       <div id="typed-lines" class="typed-lines" aria-live="polite"></div>
     </div>
   </main>
@@ -57,5 +68,24 @@
   <div id="confetti-container"></div>
 
   <script src="./script.js"></script>
+  <script>
+    // Instant autoplay on ANY page interaction
+    const bgMusic = document.getElementById('bg-music');
+    const overlay = document.getElementById('music-overlay');
+    
+    function playMusic() {
+      bgMusic.volume = 0.8;
+      bgMusic.play().then(() => {
+        overlay.style.display = 'none'; // Hide overlay after play success
+      }).catch(e => console.log('Play failed:', e));
+    }
+    
+    // Trigger on page load
+    window.addEventListener('load', playMusic);
+    // Instant trigger on any interaction
+    ['click', 'keydown', 'touchstart', 'mousedown', 'mousemove'].forEach(evt => {
+      overlay.addEventListener(evt, playMusic, {once: true});
+    });
+  </script>
 </body>
 </html>

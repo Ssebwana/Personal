@@ -77,6 +77,20 @@ function createConfetti() {
   }
 }
 
+// Aggressive autoplay music - play unmuted automatically
+const bgMusic = document.getElementById('bg-music');
+
+function initMusic() {
+  bgMusic.volume = 0.7;
+  bgMusic.play().catch(console.log);
+}
+
+// Multiple triggers for autoplay success
+document.addEventListener('click', initMusic, {once: true});
+document.addEventListener('keydown', initMusic, {once: true});
+document.addEventListener('touchstart', initMusic, {once: true});
+window.addEventListener('load', initMusic);
+
 // Call the function when the page loads
 window.addEventListener('load', () => {
   createConfetti();

@@ -387,6 +387,33 @@ main {
 }
 
 
+#music-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(-180deg, #ffc16f, #f76591);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(247, 101, 145, 0.4);
+  z-index: 1000;
+  transition: all 0.3s ease;
+  pointer-events: auto;
+}
+
+#music-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(247, 101, 145, 0.6);
+}
+
+#music-toggle.playing {
+  background: linear-gradient(-180deg, #00c8ff, #8a2be2);
+}
+
 #confetti-container {
   position: fixed;
   top: 0;
